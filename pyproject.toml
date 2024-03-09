@@ -15,6 +15,15 @@ aiohttp = "^3.9.3"
 pydantic = "^2.6.3"
 beanie = "^1.25.0"
 python-decouple = "^3.8"
+anthropic = "^0.19.1"
+langchain = "^0.1.11"
+google-search-results = "^2.4.2"
+duckduckgo-search = "^5.0"
+chromadb = "^0.4.24"
+sentence-transformers = "2.2.2"
+pypdf2 = "^3.0.1"
+pypdf = "^4.1.0"
+instructorembedding = "^1.0.1"
 
 
 [build-system]
