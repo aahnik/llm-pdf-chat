@@ -44,6 +44,9 @@ def create_sidebar():
                         save_path = STORAGE_DIR / file.name
                         with open(save_path, mode="wb") as wf:
                             wf.write(file.getvalue())
+                        con = API_BASE_URL + "process_pdfs/"
+                        response = requests.post(con)
+                        st.toast(response.json())
             st.divider()
             st.markdown("**Saved Files**")
             for file in os.listdir(STORAGE_DIR):
