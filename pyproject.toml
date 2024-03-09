@@ -26,6 +26,10 @@ pypdf = "^4.1.0"
 instructorembedding = "^1.0.1"
 
 
+[tool.poetry.group.dev.dependencies]
+black = "^24.2.0"
+isort = "^5.13.2"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
