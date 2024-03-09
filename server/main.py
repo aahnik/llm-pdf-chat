@@ -1,12 +1,14 @@
 from beanie import init_beanie
-from fastapi import FastAPI
+from fastapi import FastAPI, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
+from crud import create_new_msg
 
 from models import Message, Messages
 from config import CONFIG
 from typing import List
 
+from tasks import generate_response
 
 description = """
 Multi Chat with LLMs
@@ -41,13 +43,7 @@ async def get_messages(offset: int = 0) -> List[Messages]:
 
 
 @app.post("/messages/")
-async def post_message(message: Message) -> Message:
-    last_msgs = await Messages.find().sort(-Messages.seqno).limit(1).to_list()
-    if last_msgs:
-        new_seqno = last_msgs[0].seqno + 1
-    else:
-        new_seqno = 0
-    new_msg = await Messages.create(
-        Messages(seqno=new_seqno, username=message.username, message=message.message)
-    )
-    return await new_msg.save()
+async def post_message(message: Message, bg: BackgroundTasks) -> Message:
+    msg = await create_new_msg(message)
+    bg.add_task(generate_response, prompt=message.message)
+    return msg
