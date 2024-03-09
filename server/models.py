@@ -11,3 +11,9 @@ class Message(BaseModel):
 
 class Messages(Document, Message):
     seqno: Annotated[int, Indexed()]
+
+
+class LLMConfig(Document):
+    uid: Annotated[int, Indexed()]
+    model: str
+    temperature: float
