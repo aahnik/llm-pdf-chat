@@ -8,12 +8,12 @@ from dotenv import load_dotenv
 load_dotenv()
 
 _unset = "!@unset"
-STORAGE_DIR = Path(os.environ["FILES_STORAGE_DIR"], _unset)
+STORAGE_DIR = Path(os.environ.get("FILES_STORAGE_DIR", _unset))
 assert STORAGE_DIR != _unset
-
+print(STORAGE_DIR)
 os.makedirs(STORAGE_DIR, exist_ok=True)
 
-BACKEND_API_CON = "http://localhost:8000/messages/"
+API_BASE_URL = "http://localhost:8000/"
 
 
 def init_session_state():
@@ -32,22 +32,39 @@ def init_session_state():
 
 def create_sidebar():
     with st.sidebar:
+        with st.expander("Files"):
+            files = st.file_uploader(
+                "Upload PDFs", accept_multiple_files=True, type=["pdf"]
+            )
 
-        files = st.file_uploader(
-            "Upload PDFs", accept_multiple_files=True, type=["pdf"]
-        )
-
-        save = st.button("Save")
-        if save:
-            if files:
-                for file in files:
-                    save_path = STORAGE_DIR / file.name
-                    with open(save_path, mode="wb") as wf:
-                        wf.write(file.getvalue())
+            save_files = st.button("Save", key="save_files")
+            if save_files:
+                if files:
+                    for file in files:
+                        save_path = STORAGE_DIR / file.name
+                        with open(save_path, mode="wb") as wf:
+                            wf.write(file.getvalue())
+            st.divider()
+            st.markdown("**Saved Files**")
+            for file in os.listdir(STORAGE_DIR):
+                print(file)
+                st.write(file)
+        with st.expander("Configure LLM"):
+            temperature = st.slider(
+                "Temperature", min_value=0.0, max_value=1.0, step=0.1
+            )
+            model = st.selectbox("Model", options=["claude-2", "claude-3"])
+            save_llm = st.button("Save", key="save_llm")
+            if save_llm:
+                con = API_BASE_URL + "set_llm/"
+                response = requests.post(
+                    con, params={"temperature": temperature, "model": model}
+                )
+                st.toast(response.json())
 
 
 def run_chat_loop():
-    con = BACKEND_API_CON
+    con = API_BASE_URL + "messages/"
     response = requests.get(con + str(st.session_state.offset))
     msgs_json = response.json()
 

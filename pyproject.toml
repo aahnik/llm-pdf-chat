@@ -24,6 +24,7 @@ sentence-transformers = "2.2.2"
 pypdf2 = "^3.0.1"
 pypdf = "^4.1.0"
 instructorembedding = "^1.0.1"
+langchain-community = "^0.0.27"
 
 
 [tool.poetry.group.dev.dependencies]
