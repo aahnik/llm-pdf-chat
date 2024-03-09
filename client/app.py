@@ -1,11 +1,11 @@
 import streamlit as st
 import requests
 import time
+from pathlib import Path
+import os
 
-
-def handle_username_change():
-    st.toast(f"Username set to {st.session_state.username}")
-
+STORAGE_DIR = Path("../uploaded_files/")
+os.makedirs(STORAGE_DIR, exist_ok=True)
 
 st.title("Streamlit + FastAPI + Langchain Chat!")
 
@@ -16,12 +16,19 @@ with st.sidebar:
     uname = st.text_input(
         "Enter your username:",
         key="username_input_box",
-        on_change=handle_username_change,
         value=st.session_state.username,
     )
+
+    files = st.file_uploader("Upload PDFs", accept_multiple_files=True, type=["pdf"])
+
     save = st.button("Save")
     if save:
         st.session_state.username = uname
+        if files:
+            for file in files:
+                save_path = STORAGE_DIR / file.name
+                with open(save_path, mode="wb") as wf:
+                    wf.write(file.getvalue())
 
 
 if "connected" not in st.session_state:
