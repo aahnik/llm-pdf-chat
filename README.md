@@ -38,3 +38,15 @@ Configure the `.env` file as per the `.env.template`
     ```
 
     This would start the streamlit app at [`localhost:8501`](http://localhost:8501).
+
+## Files Directory
+
+> **Note**: Files are shared between the streamlit and FastAPI code.
+
+- It is expected that both the processes are running on the same machine.
+- The environment variable, `FILES_STORAGE_DIR`
+is used by both the streamlit and FastAPI code.
+- The files uploaded from the streamlit interface are stored in this directory,
+and are accessed by langchain running in the server code of FastAPI.
+- Either write an absolute path,
+or the path must be wrt the parent of the client or server dirs. like `../uploaded_files/`
