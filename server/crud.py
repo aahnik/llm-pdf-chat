@@ -1,4 +1,4 @@
-from models import Message, Messages
+from models import Message, Messages, LLMConfig
 
 
 async def create_new_msg(message: Message):
@@ -11,3 +11,22 @@ async def create_new_msg(message: Message):
         Messages(seqno=new_seqno, username=message.username, message=message.message)
     )
     return await new_msg.save()
+
+
+async def get_llm_config() -> LLMConfig:
+    cfg = await LLMConfig.find_one(LLMConfig.uid == 0)
+    return cfg.model, cfg.temperature
+
+
+async def set_llm_config(model: str, temperature: float):
+    cfg = await LLMConfig.find_one(LLMConfig.uid == 0)
+    cfg.model = model
+    cfg.temperature = temperature
+    await cfg.save()
+
+
+async def init_llm_config():
+    cfg = await LLMConfig.find_one(LLMConfig.uid == 0)
+    if not cfg:
+        cfg = LLMConfig(uid=0, model="claude-3", temperature=0.2)
+        await cfg.create()
