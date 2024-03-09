@@ -2,12 +2,13 @@ from typing import List
 
 from beanie import init_beanie
 from config import CONFIG
-from crud import create_new_msg
+from crud import create_new_msg, init_llm_config, set_llm_config
 from fastapi import BackgroundTasks, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from models import Message, Messages
+from models import Message, Messages, LLMConfig
 from motor.motor_asyncio import AsyncIOMotorClient
 from tasks import generate_response
+from lang import load_chain, process_docs
 
 description = """
 Multi Chat with LLMs
@@ -32,8 +33,11 @@ async def start_app():
     db = client[CONFIG.db_name]
     await init_beanie(
         database=db,
-        document_models=[Messages],
+        document_models=[Messages, LLMConfig],
     )
+    await init_llm_config()
+    await process_docs()
+    await load_chain()
 
 
 @app.get("/messages/{offset}")
@@ -46,3 +50,23 @@ async def post_message(message: Message, bg: BackgroundTasks) -> Message:
     msg = await create_new_msg(message)
     bg.add_task(generate_response, prompt=message.message)
     return msg
+
+
+@app.post("/process_pdfs/")
+async def process_pdfs():
+    try:
+        await process_docs()
+        await load_chain()
+        return {"message": "success"}
+    except Exception as err:
+        return {"error": str(err)}
+
+
+@app.post("/set_llm/")
+async def set_llm(model: str, temperature: float):
+    try:
+        await set_llm_config(model, temperature)
+        await load_chain()
+        return {"message": "success"}
+    except Exception as err:
+        return {"error": str(err)}
