@@ -1,5 +1,6 @@
-from fastapi import FastAPI, WebSocket
 from typing import List
+
+from fastapi import FastAPI, WebSocket
 
 app = FastAPI()
 

@@ -1,9 +1,9 @@
 # background tasks
+import asyncio
 import time
+
 from crud import create_new_msg
 from models import Message
-
-import asyncio
 
 
 async def generate_response(prompt: str):

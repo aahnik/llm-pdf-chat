@@ -1,6 +1,7 @@
-from pydantic import BaseModel
-from beanie import Document, Indexed
 from typing import Annotated
+
+from beanie import Document, Indexed
+from pydantic import BaseModel
 
 
 class Message(BaseModel):

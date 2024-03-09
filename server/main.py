@@ -1,13 +1,12 @@
-from beanie import init_beanie
-from fastapi import FastAPI, BackgroundTasks
-from fastapi.middleware.cors import CORSMiddleware
-from motor.motor_asyncio import AsyncIOMotorClient
-from crud import create_new_msg
-
-from models import Message, Messages
-from config import CONFIG
 from typing import List
 
+from beanie import init_beanie
+from config import CONFIG
+from crud import create_new_msg
+from fastapi import BackgroundTasks, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from models import Message, Messages
+from motor.motor_asyncio import AsyncIOMotorClient
 from tasks import generate_response
 
 description = """
