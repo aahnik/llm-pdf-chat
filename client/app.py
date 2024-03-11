@@ -10,10 +10,15 @@ load_dotenv()
 _unset = "!@unset"
 STORAGE_DIR = Path(os.environ.get("FILES_STORAGE_DIR", _unset))
 assert STORAGE_DIR != _unset
-print(STORAGE_DIR)
 os.makedirs(STORAGE_DIR, exist_ok=True)
 
 API_BASE_URL = "http://localhost:8000/"
+
+
+def refresh_uploaded_files(st):
+    st.session_state.uploaded_files = []
+    for file in os.listdir(STORAGE_DIR):
+        st.session_state.uploaded_files.append(file)
 
 
 def init_session_state():
@@ -28,6 +33,9 @@ def init_session_state():
 
     if st.session_state.connected:
         st.write(f"Connected as {st.session_state.username}")
+
+    if "uploaded_files" not in st.session_state:
+        refresh_uploaded_files(st)
 
 
 def create_sidebar():
@@ -47,10 +55,12 @@ def create_sidebar():
                         con = API_BASE_URL + "process_pdfs/"
                         response = requests.post(con)
                         st.toast(response.json())
+                        refresh_uploaded_files(st)
+                        st.rerun()
             st.divider()
             st.markdown("**Saved Files**")
-            for file in os.listdir(STORAGE_DIR):
-                print(file)
+            # retrieve from st cache, and dont use os everytime, update cache, only on save
+            for file in st.session_state.uploaded_files:
                 st.write(file)
         with st.expander("Configure LLM"):
             temperature = st.slider(
