@@ -22,7 +22,8 @@ def process_pdfs(documents):
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     texts = text_splitter.split_documents(documents)
     instructor_embeddings = HuggingFaceInstructEmbeddings(
-        model_name="hkunlp/instructor-xl", model_kwargs={"device": "cuda"}
+        model_name="hkunlp/instructor-base",
+        # model_kwargs={"device": "cuda"}
     )
     return texts, instructor_embeddings
 
