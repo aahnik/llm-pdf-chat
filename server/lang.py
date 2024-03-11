@@ -9,7 +9,7 @@ from langchain_community.document_loaders import PyPDFDirectoryLoader
 from config import CONFIG
 from crud import get_llm_config
 
-CHROMA_PERSIST_DB_DIR = "chroma-db"
+CHROMA_PERSIST_DB_DIR = "../chroma-db"
 
 
 def load_pdfs(look_dir):
