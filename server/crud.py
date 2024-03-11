@@ -28,5 +28,5 @@ async def set_llm_config(model: str, temperature: float):
 async def init_llm_config():
     cfg = await LLMConfig.find_one(LLMConfig.uid == 0)
     if not cfg:
-        cfg = LLMConfig(uid=0, model="claude-3", temperature=0.2)
+        cfg = LLMConfig(uid=0, model="claude-2", temperature=0.2)
         await cfg.create()
