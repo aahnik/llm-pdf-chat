@@ -1,9 +1,10 @@
 # background tasks
 
+import traceback
+
+import lang
 from crud import create_new_msg
 from models import Message
-import lang
-import traceback
 
 
 async def generate_response(prompt: str):

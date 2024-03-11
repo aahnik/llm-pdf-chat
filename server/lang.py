@@ -1,13 +1,11 @@
-from langchain.chains import RetrievalQA
-from langchain_community.chat_models import ChatAnthropic
-from langchain_community.embeddings import HuggingFaceInstructEmbeddings
-
-
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import Chroma
-from langchain_community.document_loaders import PyPDFDirectoryLoader
 from config import CONFIG
 from crud import get_llm_config
+from langchain.chains import RetrievalQA
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_community.chat_models import ChatAnthropic
+from langchain_community.document_loaders import PyPDFDirectoryLoader
+from langchain_community.embeddings import HuggingFaceInstructEmbeddings
+from langchain_community.vectorstores import Chroma
 
 CHROMA_PERSIST_DB_DIR = "../chroma-db"
 

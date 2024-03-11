@@ -5,10 +5,10 @@ from config import CONFIG
 from crud import create_new_msg, init_llm_config, set_llm_config
 from fastapi import BackgroundTasks, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from models import Message, Messages, LLMConfig
+from lang import load_chain, process_docs
+from models import LLMConfig, Message, Messages
 from motor.motor_asyncio import AsyncIOMotorClient
 from tasks import generate_response
-from lang import load_chain, process_docs
 
 description = """
 Multi Chat with LLMs

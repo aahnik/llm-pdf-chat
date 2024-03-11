@@ -1,4 +1,4 @@
-from models import Message, Messages, LLMConfig
+from models import LLMConfig, Message, Messages
 
 
 async def create_new_msg(message: Message):
