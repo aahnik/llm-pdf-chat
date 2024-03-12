@@ -3,12 +3,16 @@ from typing import List
 from beanie import init_beanie
 from config import CONFIG
 from crud import create_new_msg, init_llm_config, set_llm_config
+from dotenv import load_dotenv
 from fastapi import BackgroundTasks, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from lang import load_chain, process_docs
 from models import LLMConfig, Message, Messages
 from motor.motor_asyncio import AsyncIOMotorClient
 from tasks import generate_response
+
+load_dotenv()
+
 
 description = """
 Multi Chat with LLMs
