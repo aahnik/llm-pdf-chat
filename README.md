@@ -1,4 +1,4 @@
-# PriyQb
+# llm-pdf-chat
 
 FastAPI + Streamlit + Langchain!
 
